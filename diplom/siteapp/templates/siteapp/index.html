@@ -1,0 +1,28 @@
+{% extends 'siteapp/base.html' %}
+
+{% block content %}
+<div class="container" style="width: 600px;">
+    <div class="row">
+        <form class="d-flex" style="margin: 8px; width: 600px;">
+            <input class="form-control me-2" type="search" placeholder="слово или выражение" aria-label="Search">
+            <button class="btn btn-success" type="submit">Поиск</button>
+        </form>
+    </div>
+    <div class="row">
+        {% for card in cards %}
+        <div style="margin: 8px; border-radius: 10px; padding: 10px; width: 600px;" class="bg-dark text-white">
+            <h3>{{ card.word }}</h3>
+            <br>
+            {{ card.meaning }}
+            <br>
+            {% if card.example %}
+            Пример: {{ card.example }}
+            <br>
+            {% endif %}
+            <a class="btn btn-outline-success" href="/like/{{ card.id }}/">Likes {{ card.likes }}</a>
+            <a class="btn btn-outline-success" href="/dislike/{{ card.id }}/">Dislikes {{ card.dislikes }}</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

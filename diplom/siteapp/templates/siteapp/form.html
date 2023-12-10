@@ -1,0 +1,31 @@
+{% extends 'siteapp/base.html' %}
+
+{% block content %}
+<div class="container" style="width: 600px;">
+    <div class="row">
+        <form action="" method="post" class="bg-dark"
+              style="margin: 8px; border-radius: 10px; padding-top: 30px; padding-bottom: 30px; width: 600px;">
+            <div class="d-flex justify-content-center">
+                <div class="row">
+                    <div style="width: 300px;">
+                        {% csrf_token %}
+                        {% for field in form %}
+                        <span style="color: white;">{{ field.label }}</span><br>
+                        {{ field }}
+                        <div class="error" style="color: white;">{{ field.errors }}</div>
+                        {% endfor %}
+                        <br>
+                        <button class="btn btn-success" type="submit" style="width: 300px;">{{ button }}</button>
+                        {% if login_page %}
+                        <div style="width: 350px;">
+                            <p style="color: white;">Еще нет аккаунта? <a
+                                    href="{% url 'register' %}">Зарегистрироваться</a></p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

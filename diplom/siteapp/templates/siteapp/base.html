@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'siteapp/css/bootstrap.min.css' %}">
+    <title>{% block title %}Argo{% endblock %}</title>
+</head>
+<body style="background-color: #464646;">
+<div class="d-flex justify-content-center">
+    <div class="container" style="width: 900px;">
+        <div class="row">
+            <nav class="navbar navbar-expand-xl navbar-dark bg-dark"
+                 style="margin: 8px; border-radius: 10px; width: 900px;">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="{% url 'index' %}">Argo</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarWithDropdown"
+                            aria-controls="navbarWithDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    {% if user.is_authenticated %}
+                    <div class="collapse navbar-collapse show justify-content-end" id="navbarWithDropdown">
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ user.username }}
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a class="dropdown-item" href="{% url 'create' %}">Создать</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'setting' %}">Настройки</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'logout_view' %}">Выход</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <div class="collapse navbar-collapse show justify-content-end" id="navbarNavAltMarkup">
+                        <div class="navbar-nav">
+                            <a class="nav-link" href="{% url 'login_view' %}">Вход</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+        <div class="row">
+            {% block content %}
+            <h1>Добро пожаловать на главную страницу сайта!</h1>
+            {% endblock %}
+        </div>
+    </div>
+</div>
+<script src="{% static 'siteapp/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
