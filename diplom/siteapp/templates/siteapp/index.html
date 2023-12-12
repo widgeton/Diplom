@@ -3,8 +3,9 @@
 {% block content %}
 <div class="container" style="width: 600px;">
     <div class="row">
-        <form class="d-flex" style="margin: 8px; width: 600px;">
-            <input class="form-control me-2" type="search" placeholder="слово или выражение" aria-label="Search">
+        <form method="post" action="{% url 'search' %}" class="d-flex" style="margin: 8px; width: 600px;">
+            {% csrf_token %}
+            <input class="form-control me-2" type="search" name="search" placeholder="слово или выражение" aria-label="Search">
             <button class="btn btn-success" type="submit">Поиск</button>
         </form>
     </div>

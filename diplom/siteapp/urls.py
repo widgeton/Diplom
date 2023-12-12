@@ -9,6 +9,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('create/', views.create, name='create'),
     path('setting/', views.setting, name='setting'),
+    path('search/', views.search, name='search'),
     path('like/<int:card_id>/', views.like, name='like'),
     path('dislike/<int:card_id>/', views.dislike, name='dislike')
 ]

@@ -106,3 +106,11 @@ def dislike(request, card_id):
 
 def setting(request):
     return render(request, 'siteapp/setting.html')
+
+
+def search(request):
+    query = request.POST.get('search')
+    if query != -1:
+        cards = models.Card.objects.filter(word__contains=query).all()
+        return render(request, 'siteapp/index.html', context={'cards': cards})
+    return redirect(request.META['HTTP_REFERER'])
