@@ -55,3 +55,39 @@ class Create(forms.Form):
     word.widget.attrs.update(attrs)
     meaning.widget.attrs.update(attrs)
     example.widget.attrs.update(attrs)
+
+
+class ChangeName(forms.Form):
+    name = forms.CharField(label='Новое имя', max_length=50)
+
+    attrs = {'style': "width: 300px", 'class': "form-control me-2"}
+    name.widget.attrs.update(attrs)
+
+
+class ChangePassword(forms.Form):
+    old_password = forms.CharField(label="Старый пароль", min_length=6, max_length=16, widget=forms.PasswordInput)
+    password = forms.CharField(label="Новый пароль", min_length=6, max_length=16, widget=forms.PasswordInput)
+    repeat_password = forms.CharField(label="Повторите новый пароль", widget=forms.PasswordInput)
+
+    attrs = {'style': "width: 300px", 'class': "form-control me-2"}
+    old_password.widget.attrs.update(attrs)
+    password.widget.attrs.update(attrs)
+    repeat_password.widget.attrs.update(attrs)
+
+    def __init__(self, request, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.request = request
+
+    def clean_repeat_password(self):
+        rep_pass = self.cleaned_data['repeat_password']
+        password = self.cleaned_data['password']
+        if rep_pass != password:
+            raise forms.ValidationError("Пароль повторен неверно!")
+        return rep_pass
+
+    def clean_old_password(self):
+        user = User.objects.get(id=self.request.user.id)
+        old_password = self.cleaned_data['old_password']
+        if not check_password(old_password, user.password):
+            raise forms.ValidationError("Неверный старый пароль!")
+        return old_password

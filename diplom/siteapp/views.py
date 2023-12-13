@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth import login, logout
 from . import models
 from . import forms
@@ -105,7 +106,27 @@ def dislike(request, card_id):
 
 
 def setting(request):
-    return render(request, 'siteapp/setting.html')
+    chn = forms.ChangeName()
+    chp = forms.ChangePassword(request)
+    if request.method == 'POST':
+        if 'name' in request.POST:
+            chn = forms.ChangeName(request.POST)
+            if chn.is_valid():
+                user = User.objects.get(id=request.user.id)
+                user.username = chn.cleaned_data['name']
+                user.save(update_fields=["username"])
+                return redirect('setting')
+        elif 'password' in request.POST:
+            chp = forms.ChangePassword(request, request.POST)
+            if chp.is_valid():
+                user = User.objects.get(id=request.user.id)
+                password = chp.cleaned_data['password']
+                user.password = make_password(password)
+                user.save(update_fields=["password"])
+                return redirect('setting')
+
+    context = {'forms': (chn, chp)}
+    return render(request, 'siteapp/setting.html', context)
 
 
 def search(request):

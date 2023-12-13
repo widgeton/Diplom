@@ -1,6 +1,27 @@
 {% extends 'siteapp/base.html' %}
 
 {% block content %}
-
-
+<div class="container" style="width: 600px;">
+    <div class="row">
+        {% for form in forms %}
+        <form method="post" action="" class="bg-dark"
+              style="margin: 8px; border-radius: 10px; padding-top: 30px; padding-bottom: 30px; width: 600px;">
+            <div class="d-flex justify-content-center">
+                <div class="row">
+                    <div style="width: 300px;">
+                        {% csrf_token %}
+                        {% for field in form %}
+                        <span style="color: white;">{{ field.label }}</span><br>
+                        {{ field }}
+                        <div class="error" style="color: white;">{{ field.errors }}</div>
+                        {% endfor %}
+                        <br>
+                        <button class="btn btn-success" type="submit">Изменить</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
