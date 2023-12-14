@@ -24,26 +24,20 @@ class Register(forms.Form):
 
 
 class Login(forms.Form):
-    email = forms.EmailField(label="Почта", )
+    email = forms.EmailField(label="Почта")
     password = forms.CharField(label="Пароль", min_length=6, max_length=16, widget=forms.PasswordInput)
 
     attrs = {'style': "width: 300px", 'class': "form-control me-2"}
     email.widget.attrs.update(attrs)
     password.widget.attrs.update(attrs)
 
-    def clean_email(self):
-        email = self.cleaned_data['email']
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data['email']
+        password = cleaned_data['password']
         user = User.objects.filter(email=email).first()
-        if user is None:
-            raise forms.ValidationError("Неверный email!")
-        return email
-
-    def clean_password(self):
-        password = self.cleaned_data['password']
-        user = User.objects.filter(email=self.cleaned_data['email']).first()
-        if not check_password(password, user.password):
-            raise forms.ValidationError("Неверный пароль!")
-        return password
+        if user is None or not check_password(password, user.password):
+            raise forms.ValidationError("Неверный email или пароль!")
 
 
 class Create(forms.Form):
