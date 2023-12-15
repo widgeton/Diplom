@@ -60,7 +60,7 @@ def create(request):
         if form.is_valid():
             word = form.cleaned_data['word']
             meaning = form.cleaned_data['meaning']
-            example = form.cleaned_data['meaning']
+            example = form.cleaned_data['example']
             card = models.Card(word=word, meaning=meaning, example=example, user=request.user)
             card.save()
             return redirect('index')
