@@ -115,15 +115,17 @@ def setting(request):
                 user = User.objects.get(id=request.user.id)
                 user.username = chn.cleaned_data['name']
                 user.save(update_fields=["username"])
-                return redirect('setting')
+                return redirect('index')
         elif 'password' in request.POST:
             chp = forms.ChangePassword(request, request.POST)
             if chp.is_valid():
+                logout(request)
                 user = User.objects.get(id=request.user.id)
                 password = chp.cleaned_data['password']
                 user.password = make_password(password)
                 user.save(update_fields=["password"])
-                return redirect('setting')
+                login(request, user)
+                return redirect('index')
 
     context = {'forms': (chn, chp)}
     return render(request, 'siteapp/setting.html', context)
