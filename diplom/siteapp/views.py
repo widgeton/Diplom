@@ -9,7 +9,7 @@ from . import forms
 
 
 def index(request):
-    cards = models.Card.objects.all()[-10:-1:-1]
+    cards = models.Card.objects.order_by('-id').all()[10:]
     return render(request, 'siteapp/index.html', context={'cards': cards})
 
 
