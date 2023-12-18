@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from django.contrib.auth.hashers import check_password, make_password
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth import login, logout
+from django.contrib import messages
 from . import models
 from . import forms
 
@@ -115,7 +116,8 @@ def setting(request):
                 user = User.objects.get(id=request.user.id)
                 user.username = chn.cleaned_data['name']
                 user.save(update_fields=["username"])
-                return redirect('index')
+                messages.success(request, 'Имя успешно изменено!')
+                return redirect('setting')
         elif 'password' in request.POST:
             chp = forms.ChangePassword(request, request.POST)
             if chp.is_valid():
@@ -125,7 +127,8 @@ def setting(request):
                 user.password = make_password(password)
                 user.save(update_fields=["password"])
                 login(request, user)
-                return redirect('index')
+                messages.success(request, 'Пароль успешно изменен!')
+                return redirect('setting')
 
     context = {'forms': (chn, chp)}
     return render(request, 'siteapp/setting.html', context)
